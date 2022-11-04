@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private void Update()   //Inputs are recorded every frame
     {
         //Moving along x axis
-        float xInp = Input.GetAxis("Horizontal");
+        float xInp = Input.GetAxisRaw("Horizontal");
 
         //Here is where some force is added to the ridged body (rb)
         rb.velocity = new Vector2(xInp * force, rb.velocity.y);
