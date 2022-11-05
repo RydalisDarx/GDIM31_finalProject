@@ -53,12 +53,5 @@ public class PlayerController : MonoBehaviour
             //Player is in contact with floor
             surfaced = true;
         }
-
-        if (collision.collider.tag == "GameOver")
-        {
-            //If collision occurs with another collider we call the GameOver() function from GameStateManager
-            GameStateManager.GameOver();
-            Debug.Log("Player flew into a pillar.");
-        }
     }
 }
