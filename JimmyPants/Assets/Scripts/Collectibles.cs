@@ -17,6 +17,7 @@ public class Collectibles : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Destroy(this.gameObject);
+            GameStateManager.Restart();
             clo++;
             checkBabyState(clo);
         }//end if collectable

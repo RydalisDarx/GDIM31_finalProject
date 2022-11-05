@@ -15,8 +15,8 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         search = true;
-        GameObject.Instantiate(bindingObj, new Vector3(binding, this.transform.position.y, this.transform.position.z), this.transform.rotation);
-        GameObject.Instantiate(bindingObj, new Vector3(binding*-1, this.transform.position.y, this.transform.position.z), this.transform.rotation);
+        GameObject.Instantiate(bindingObj, new Vector3(this.transform.position.x + binding, this.transform.position.y, this.transform.position.z), this.transform.rotation);
+        GameObject.Instantiate(bindingObj, new Vector3(this.transform.position.x + binding *-1, this.transform.position.y, this.transform.position.z), this.transform.rotation);
     }
 
     void Update()
@@ -42,13 +42,14 @@ public class EnemyMovement : MonoBehaviour
                 search = true;
             }
         }//end binding
-    }//end trigger
-    private void OnColisionEnter2D(Collider2D collision)
-    {
         
-        if(collision.gameObject.tag == "Player")
+    }//end trigger
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
         {
-            //GameStateManager.GameOver();
+            GameStateManager.GameOver();
         }//end killPlayer
+        
     }//end collision
 }
