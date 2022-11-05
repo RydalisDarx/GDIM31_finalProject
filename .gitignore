@@ -17,12 +17,6 @@ sysinfo.txt
 # VS/MD solution and project files
 ###
 [Ee]xportedObj/
-*.booproj
-*.csproj
-*.sln
-*.suo
-*.svd
-*.unityproj
 *.user
 *.userprefs
 *.pidb
