@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Floor
+  - GameOver
+  - Binding
+  - NextLevel
+  - PantCollected
   layers:
   - Default
   - TransparentFX
@@ -11,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Ground
   - 
   - 
   - 
@@ -38,6 +43,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 885978985
+    locked: 0
+  - name: Middleground
+    uniqueID: 3302635627
+    locked: 0
+  - name: Foreground
+    uniqueID: 2861980661
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
