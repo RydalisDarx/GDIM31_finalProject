@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,14 +21,20 @@ public class PlayerController : MonoBehaviour
     //Player Animation
     private Animator playerAnim;
 
+    private Vector3 respawnLoc; //Location where the player starts/respawns
+    public GameObject killBox;
 
-    private void Awake()
+    public Text collectedText;
+
+    void Start()
     {
         player = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<Animator>();
+        respawnLoc = transform.position; //Store position of player at start of game
+        collectedText.text = "Jimmy's Pant Collection: " + Collectibles.totalCollected + "/3";
     }
 
-    private void Update()   //Inputs are recorded every frame
+    void Update()   //Inputs are recorded every frame
     {
         //find position of groundCheck object, use players radius(circle around players feet), check for overlap of ground to be true/false
         surfaced = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
@@ -38,9 +46,11 @@ public class PlayerController : MonoBehaviour
         //Moving left or right on x axis
         if(xInp > 0f){ 
             player.velocity = new Vector2(xInp * force, player.velocity.y);
+            transform.localScale = new Vector2(1.047133f, 0.9223106f);
         }
         else if(xInp < 0f){
-            player.velocity = new Vector2(xInp * force, player.velocity.y);    
+            player.velocity = new Vector2(xInp * force, player.velocity.y);
+            transform.localScale = new Vector2(-1.047133f, 0.9223106f);
         }
         else{ //not moving
             player.velocity = new Vector2(0, player.velocity.y);
@@ -57,5 +67,33 @@ public class PlayerController : MonoBehaviour
         playerAnim.SetFloat("Force", Mathf.Abs(player.velocity.x));
         //update boolean for player on ground or not
         playerAnim.SetBool("OnGround", surfaced);
+
+        //killBox follows player along x axis and stays same on y axis
+        killBox.transform.position = new Vector2(transform.position.x, killBox.transform.position.y);
+    }
+
+    //Player runs into collider
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "GameOver")
+        {
+            transform.position = respawnLoc; //if killbox contact, back to original respawn
+        }
+        else if(collision.tag == "NextLevel")
+        {
+            //on collision enter the next level/scene in index
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else if(collision.tag == "PantCollected")
+        {
+            //Total collected throughout levels
+            Collectibles.totalCollected += 1;
+            //Debug.Log(Collectibles.totalCollected);
+
+            collectedText.text = "Jimmy's Pant Collection: " + Collectibles.totalCollected + "/3";
+
+            //Disable after collected
+            collision.gameObject.SetActive(false);
+        }
     }
 }
