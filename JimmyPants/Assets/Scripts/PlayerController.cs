@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
             Collectibles.totalCollected += 1;
 
             //Display amount collected so far
-            collectedText.text = "Jimmy's Pant Collection: " + Collectibles.totalCollected + "/3";
+            collectedText.text = "Pant Collection: " + Collectibles.totalCollected + "/3";
 
             //Disable after collected
             collision.gameObject.SetActive(false);
