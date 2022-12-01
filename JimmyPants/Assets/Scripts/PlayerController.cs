@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask groundLayer; //specify layer "ground"
     private bool surfaced; //Player in contact with floor
+    private bool isFinished; //Check that player did collide with collectible finish
 
     //Player Animation
     private Animator playerAnim;
@@ -26,12 +27,19 @@ public class PlayerController : MonoBehaviour
 
     public Text collectedText;
 
+    [SerializeField]
+    private AudioSource jumpSound; //Jump sound element
+    [SerializeField]
+    private AudioSource finishSound; //Level completed sound element
+    [SerializeField]
+    private AudioSource deathSound; //Death sound element
+
     void Start()
     {
-        player = GetComponent<Rigidbody2D>();
+        player = GetComponent<Rigidbody2D>(); 
         playerAnim = GetComponent<Animator>();
         respawnLoc = transform.position; //Store position of player at start of game
-        collectedText.text = "Jimmy's Pant Collection: " + Collectibles.totalCollected + "/3";
+        collectedText.text = "Pant Collection: " + Collectibles.totalCollected + "/3"; //Text for collected UI
     }
 
     void Update()   //Inputs are recorded every frame
@@ -46,11 +54,11 @@ public class PlayerController : MonoBehaviour
         //Moving left or right on x axis
         if(xInp > 0f){ 
             player.velocity = new Vector2(xInp * force, player.velocity.y);
-            transform.localScale = new Vector2(1.047133f, 0.9223106f);
+            transform.localScale = new Vector2(1.047133f, 0.9223106f); 
         }
         else if(xInp < 0f){
             player.velocity = new Vector2(xInp * force, player.velocity.y);
-            transform.localScale = new Vector2(-1.047133f, 0.9223106f);
+            transform.localScale = new Vector2(-1.047133f, 0.9223106f); //Flip player sprite
         }
         else{ //not moving
             player.velocity = new Vector2(0, player.velocity.y);
@@ -60,6 +68,7 @@ public class PlayerController : MonoBehaviour
         //If both are true, the player jumps
         if (Input.GetKeyDown(KeyCode.Space) && surfaced)
         {
+            jumpSound.Play(); //Play jump sound
             player.velocity = new Vector2(player.velocity.x, force); //Player jump mechanic                                               
         }
 
@@ -77,23 +86,32 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.tag == "GameOver")
         {
+            deathSound.Play();
             transform.position = respawnLoc; //if killbox contact, back to original respawn
         }
-        else if(collision.tag == "NextLevel")
+        else if(collision.tag == "NextLevel" && !isFinished)
         {
+            finishSound.Play();
+            isFinished = true;
             //on collision enter the next level/scene in index
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            Invoke("CompleteLevel", 2f);
         }
         else if(collision.tag == "PantCollected")
         {
             //Total collected throughout levels
             Collectibles.totalCollected += 1;
-            //Debug.Log(Collectibles.totalCollected);
 
+            //Display amount collected so far
             collectedText.text = "Jimmy's Pant Collection: " + Collectibles.totalCollected + "/3";
 
             //Disable after collected
             collision.gameObject.SetActive(false);
         }
     }
+    private void CompleteLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
 }
+
+

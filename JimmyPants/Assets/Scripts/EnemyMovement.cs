@@ -28,6 +28,7 @@ public class EnemyMovement : MonoBehaviour
         {
             this.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * Time.fixedDeltaTime * -1, this.GetComponent<Rigidbody2D>().velocity.y);
         }
+
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
