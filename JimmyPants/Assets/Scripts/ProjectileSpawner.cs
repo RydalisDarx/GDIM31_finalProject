@@ -14,12 +14,14 @@ public class ProjectileSpawner : MonoBehaviour
     private Transform spawnPoint;
     void Start()
     {
+        //Spawns projectile on start
         Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Spawns projectile after a certain amount of time
         time += Time.deltaTime;
 
         if (time > spawnTime)

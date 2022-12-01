@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour, IDataPersistence
     private int sceneNext;
     public void StartGame()
     {
+        //Starts a new game
         DataPersistenceManager.instance.NewGame();
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
