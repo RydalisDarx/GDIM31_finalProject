@@ -17,7 +17,6 @@ public class GameStateManager : MonoBehaviour
 
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +49,7 @@ public class GameStateManager : MonoBehaviour
         //Add any logic that you would want to do when the game ends here
 
         //This invokes the game over screen - here we are calling all the methods that subscribed to this action. 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     }
 
